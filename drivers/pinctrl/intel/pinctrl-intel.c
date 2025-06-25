@@ -1544,6 +1544,9 @@ static int intel_pinctrl_probe(struct platform_device *pdev,
 	struct intel_pinctrl *pctrl;
 	int i, ret, irq;
 
+	if (!soc_data)
+		return -EINVAL;
+
 	pctrl = devm_kzalloc(dev, sizeof(*pctrl), GFP_KERNEL);
 	if (!pctrl)
 		return -ENOMEM;
@@ -1671,7 +1674,7 @@ EXPORT_SYMBOL_NS_GPL(intel_pinctrl_probe_by_hid, PINCTRL_INTEL);
 
 int intel_pinctrl_probe_by_uid(struct platform_device *pdev)
 {
-	const struct intel_pinctrl_soc_data *data;
+	const struct intel_pinctrl_soc_data *data = NULL;
 
 	data = intel_pinctrl_get_soc_data(pdev);
 	if (IS_ERR(data))
